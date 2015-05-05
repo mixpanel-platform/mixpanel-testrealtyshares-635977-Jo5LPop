@@ -8,7 +8,108 @@
   </head>
   <body class="mixpanel-platform-body">
     <script>
-      // Run queries and display results here
+    
+    
+     var dealData = {}
+        var dataExported = MP.api.query('/api/2.0/segmentation/sum/', {
+            from: moment().subtract(6, 'months'),
+            to: moment(),
+            event: 'Deal',
+            on: 'properties["Size"]',
+            unit: 'month'
+        }, {dataType:'json'})
+        .done(function(json) {
+          console.log(json);
+        })
+        .fail(function($xhr) {
+          console.log('error with request', $xhr);
+        });
+        
+        $.when(dataExported).done(function(dataExtracted) {
+          var dealData = dataExtracted.results;
+          console.log(dealData)
+
+          $('</div><span>' + "2015 Performance by Quarter + Month" + '</span>').css({
+              'background': 'white',
+              'border': '1px solid #7a8195',
+              'border-radius': '5px',
+              'color': '#7a8195',
+              'display': 'inline-block',
+              'margin-bottom': '20px',
+              'margin-top': '10px',
+              'padding': '10px',
+              'float':'left'
+            }).appendTo('body');
+          
+           $('<div></div><br clear="all" />').css({'width':'100%'}).appendTo('body');
+           
+          $('<div class="dealData" ></div>').css({'width':'460px', 'float':'left'}).appendTo('body').MPChart({
+              chartType: 'bar',
+              data: dealData
+          })
+          
+          $('<div class="dealData"></div>').css({'width':'460px', 'float':'right'}).appendTo('body').MPChart({
+              chartType: 'pie',
+              data: dealData
+          })
+        });
+      
+        apiCalls = []
+      
+        var dealQuery = MP.api.query('/api/2.0/segmentation/sum/', {
+            from: moment().subtract(6, 'months'),
+            to: moment(),
+            event: 'Deal',
+            on: 'properties["Size"]',
+            unit: 'month'
+        }, {dataType:'json'})
+        
+       var debtQuery = MP.api.query('/api/2.0/segmentation/', {
+            from: moment().subtract(6, 'months'),
+            to: moment(),
+            event: 'Deal',
+            on: 'properties["Type"]',
+            unit: 'month'
+        }, {dataType:'json'})
+        
+        apiCalls.push(dealQuery);
+        apiCalls.push(debtQuery);
+        
+        Promise.all(apiCalls).then(function(promiseArray){
+            console.log(promiseArray);
+        });
+       
+       
+        /* $.when(dataExported).done(function(dataExtracted) {
+          var dealData = dataExtracted.results;
+          console.log(dealData)
+
+          $('</div><span>' + "Debt vs Equity" + '</span>').css({
+              'background': 'white',
+              'border': '1px solid #7a8195',
+              'border-radius': '5px',
+              'color': '#7a8195',
+              'display': 'inline-block',
+              'margin-bottom': '20px',
+              'margin-top': '10px',
+              'padding': '10px',
+              'float':'left'
+            }).appendTo('body');
+          
+           $('<div></div><br clear="all" />').css({'width':'100%'}).appendTo('body');
+           
+          $('<div class="dealData" ></div>').css({'width':'460px', 'float':'left'}).appendTo('body').MPChart({
+              chartType: 'bar',
+              data: dealData
+          })
+          
+          $('<div class="dealData"></div>').css({'width':'460px', 'float':'right'}).appendTo('body').MPChart({
+              chartType: 'pie',
+              data: dealData
+          })
+        });*/
+        
+        
     </script>
   </body>
 </html>
