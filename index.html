@@ -77,7 +77,33 @@
         
         Promise.all(apiCalls).then(function(promiseArray){
             console.log(promiseArray);
+            $('</div><span>' + "2015 Debt vs Equity Performance by Quarter" + '</span>').css({
+              'background': 'white',
+              'border': '1px solid #7a8195',
+              'border-radius': '5px',
+              'color': '#7a8195',
+              'display': 'inline-block',
+              'margin-bottom': '20px',
+              'margin-top': '10px',
+              'padding': '10px',
+              'float':'left'
+            }).appendTo('body');
+          
+           $('<div></div><br clear="all" />').css({'width':'100%'}).appendTo('body');
+           
+          $('<div class="debt" ></div>').css({'width':'460px', 'float':'left'}).appendTo('body').MPChart({
+              chartType: 'bar',
+              data: promiseArray[0]['results']
+          })
+          
+          $('<div class="debt"></div>').css({'width':'460px', 'float':'right'}).appendTo('body').MPChart({
+              chartType: 'pie',
+              data: promiseArray[1]['results']
+          })
         });
+
+          
+       
        
        
         /* $.when(dataExported).done(function(dataExtracted) {
@@ -109,6 +135,12 @@
           })
         });*/
         
+
+        
+        
+        
+      
+       
         
     </script>
   </body>
