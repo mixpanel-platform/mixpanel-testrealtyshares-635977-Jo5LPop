@@ -60,7 +60,7 @@
             from: moment().subtract(6, 'months'),
             to: moment(),
             event: 'Deal',
-            unit: 'day'
+            unit: 'month'
         }, {dataType:'json'})
         
        var debtQuery = MP.api.query('/api/2.0/segmentation/', {
@@ -68,7 +68,7 @@
             to: moment(),
             event: 'Deal',
             on: 'properties["Type"]',
-            unit: 'day'
+            unit: 'month'
         }, {dataType:'json'})
         
         apiCalls.push(dealQuery);
